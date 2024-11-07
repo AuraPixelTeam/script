@@ -1,5 +1,4 @@
 
-
 if game.PlaceId == 16347800591 then
     wait(2)
     
@@ -40,6 +39,22 @@ if game.PlaceId == 16347800591 then
         }
 
         game:GetService("ReplicatedStorage").ReliableRedEvent:FireServer(unpack(play))
+    end
+    
+    
+    if getgenv().AutoAbility_Gojo then
+        spawn(function()
+            while getgenv().AutoAbility_Gojo do
+                local autoability = {
+                    [1] = "AutoAbility",
+                    [2] = workspace.Units.GojoEvo
+                }
+
+                game:GetService("ReplicatedStorage").EventsAndFunctions.RemoteFunctions.InteractUnit:InvokeServer(unpack(autoability))
+
+                wait(3) 
+            end
+        end)
     end
 else
     for i = 1, getgenv().Speed do
