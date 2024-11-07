@@ -47,7 +47,7 @@ else
         spawn(function()
             while getgenv().AutoAbility_Gojo do
                 local autoability = {
-                    [1] = "AutoAbility",
+                    [1] = "UseAbility",
                     [2] = workspace.Units.GojoEvo
                 }
 
@@ -62,12 +62,12 @@ else
     if getgenv().AutoAbility_Sukuna then
         spawn(function()
             while getgenv().AutoAbility_Sukuna do
-                local args = {
+                local autoabilitysukuna = {
                     [1] = "UseAbility",
                     [2] = workspace.Units.SukunaEvo
                 }
 
-                game:GetService("ReplicatedStorage").EventsAndFunctions.RemoteFunctions.InteractUnit:InvokeServer(unpack(args))
+                game:GetService("ReplicatedStorage").EventsAndFunctions.RemoteFunctions.InteractUnit:InvokeServer(unpack(autoabilitysukuna))
 
                 wait(3) 
             end
