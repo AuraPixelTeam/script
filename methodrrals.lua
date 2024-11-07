@@ -226,17 +226,7 @@ if game.PlaceId == 12886143095 then
         game:GetService("ReplicatedStorage").Remotes.InfiniteCastleManager:FireServer(unpack(playinfcastle))
 
         wait(4)  
-        local gameEnded = game:GetService("ReplicatedStorage"):WaitForChild("GameEnded")
-        if gameEnded.Value then
-            Webhook()
-            print("Game has ended. Teleporting back...")
-            wait(3)
-            local teleportArgs = {
-                [1] = player 
-            }
-            game:GetService("ReplicatedStorage").Remotes.TeleportBack:FireServer(unpack(teleportArgs))
-            break
-        end
+       
     end
 else
     local screenGui = Instance.new("ScreenGui")
