@@ -56,6 +56,22 @@ if game.PlaceId == 16347800591 then
             end
         end)
     end
+
+    
+    if getgenv().AutoAbility_Sukuna then
+        spawn(function()
+            while getgenv().AutoAbility_Sukuna do
+                local args = {
+                    [1] = "UseAbility",
+                    [2] = workspace.Units.SukunaEvo
+                }
+
+                game:GetService("ReplicatedStorage").EventsAndFunctions.RemoteFunctions.InteractUnit:InvokeServer(unpack(args))
+
+                wait(3) 
+            end
+        end)
+    end
 else
     for i = 1, getgenv().Speed do
         game:GetService("ReplicatedStorage").EventsAndFunctions.RemoteFunctions.ChangeGameSpeed:InvokeServer()
