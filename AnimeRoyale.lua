@@ -1,10 +1,4 @@
 
-repeat wait() until game:GetService("Players")
-
-if not game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then repeat wait() until game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") end
-    
-wait(1)
-
 do
     local gui = game:GetService("CoreGui"):FindFirstChild("HovxrzGui")
     if gui then
