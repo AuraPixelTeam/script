@@ -42,7 +42,8 @@ if game.PlaceId == 16347800591 then
     end
     
     
-    if getgenv().AutoAbility_Gojo then
+else
+   if getgenv().AutoAbility_Gojo then
         spawn(function()
             while getgenv().AutoAbility_Gojo do
                 local autoability = {
@@ -72,7 +73,6 @@ if game.PlaceId == 16347800591 then
             end
         end)
     end
-else
     for i = 1, getgenv().Speed do
         game:GetService("ReplicatedStorage").EventsAndFunctions.RemoteFunctions.ChangeGameSpeed:InvokeServer()
     end
