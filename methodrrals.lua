@@ -5,6 +5,12 @@ local playerGui = player:WaitForChild("PlayerGui")
 local username = player.Name
 local HttpService = game:GetService("HttpService")
 local requestt = http_request or request or syn.request
+local FileSys = loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Main/main/Library/File_System.lua"))()
+do
+  FileSys:GetFolder("JG")
+  FileSys:GetFolder("JG/ALS")
+  FileSys:GetFile("JG/ALS" .. username .. "_playerstats.json")
+end
 local headers = {
     ["Content-Type"] = "application/json"
 }
@@ -76,10 +82,7 @@ function GetStats()
 end
 
 function LoadPlayerStats()
-    local path = "JG/ALS/"
-    local fileName = path .. username .. "_playerstats.json"
     local stats = {}
-
     if isfile(fileName) then
         local fileContent = readfile(fileName)
         stats = HttpService:JSONDecode(fileContent)
@@ -172,7 +175,7 @@ function SavePlayerStats()
     local path = "JG/ALS/"
     local fileName = path .. username .. "_playerstats.json"
     local success, err = pcall(function()
-        writefile(fileName, HttpService:JSONEncode(stats))
+        FileSys:WriteFile(fileName, stats)
     end)
 
     if success then
