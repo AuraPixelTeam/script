@@ -84,7 +84,7 @@ end
 function LoadPlayerStats()
     local stats = {}
     if isfile(fileName) then
-        local fileContent = readfile(fileName)
+        local fileContent = FileSys:ReadFile(fileName)
         stats = HttpService:JSONDecode(fileContent)
     else
         warn("Player stats file not found: " .. fileName)
