@@ -1,5 +1,3 @@
-getgenv().Time = 5
-getgenv().Webhook = "https://discord.com/api/webhooks/1085061710051823636/cdt9Beyulbp5wtV9a8-QbkbkdgI59Hq0MZiGx0F8473bybtlGej7SEULgqVoZQVOh5-R"
 
 repeat wait() until game:IsLoaded() and game.Players.LocalPlayer:FindFirstChild("DataLoaded")
 local headers = {
