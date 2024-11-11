@@ -223,7 +223,7 @@ if game.PlaceId == 12886143095 then
     while true do
         local playinfcastle = {
             [1] = "Play",
-            [2] = 0,
+            [2] = 5,
             [3] = true
         }
         game:GetService("ReplicatedStorage").Remotes.InfiniteCastleManager:FireServer(unpack(playinfcastle))
