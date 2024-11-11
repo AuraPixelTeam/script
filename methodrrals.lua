@@ -82,6 +82,9 @@ function GetStats()
 end
 
 function LoadPlayerStats()
+    local path = "JG/ALS/"
+    local fileName = path .. username .. "_playerstats.json"
+    
     local stats = {}
     if isfile(fileName) then
         local fileContent = FileSys:ReadFile(fileName)
@@ -92,6 +95,7 @@ function LoadPlayerStats()
 
     return stats
 end
+
 
 function Webhook()
     local rewards = GetRewards()
