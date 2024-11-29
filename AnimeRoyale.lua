@@ -1,155 +1,100 @@
 
-function play()
-    local playArgs = {
-        [1] = {
-            ["\3"] = {
-                [1] = {
-                    [1] = "Skip",
-                    ["n"] = 1
-                }
-            }
-        },
-        [2] = {}
-    }
-    game:GetService("ReplicatedStorage").ReliableRedEvent:FireServer(unpack(playArgs))
+
+local playerName = game.Players.LocalPlayer.Name
+
+local gameStates = {
+    [1] = "Replay",
+    [2] = "PlayNext",
+    [3] = "ReturnToLobby"
+}
+local FileSys = loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Main/main/Library/File_System.lua"))()
+    local filePath = "JG Hub/Anime Genesis/unitname.json"
+    
+    do
+        FileSys:GetFolder("JG Hub")
+        FileSys:GetFolder("JG Hub/Anime Genesis")
+    end
+    
+    local locationFile = FileSys:GetFile(filePath)
+
+
+if game.PlaceId == 18318589583 then
+    for _, player in ipairs(game.Players:GetPlayers()) do
+        local playerFolder = game.Workspace:FindFirstChild("UnitWalkFolder") and game.Workspace.UnitWalkFolder:FindFirstChild(playerName)
+        
+        if playerFolder then
+            local jsonData = {}
+            for index, child in ipairs(playerFolder:GetChildren()) do
+                jsonData["unit" .. index] = child.Name
+            end
+            FileSys:WriteFile(filePath, game:GetService("HttpService"):JSONEncode(jsonData))
+            print("Dữ liệu của người chơi " .. playerName .. " đã được ghi vào file JSON.")
+        else
+            print("Không tìm thấy thư mục của người chơi: " .. playerName)
+        end
+    end
+else
+    print("PlaceId không phải là 163628. Tiến hành thực thi mã cho các nơi khác.")
+    
+    local jsonData = FileSys:ReadFile(filePath)
+    if not jsonData then
+        error("Không tìm thấy file JSON hoặc file rỗng!")
+    end
+    
+    local unitData = game:GetService("HttpService"):JSONDecode(jsonData)
+    
+    local function getUnitName(rawName)
+        return string.match(rawName, "^[^%d%.]+") or rawName
+    end
+
+    local pathFolder = game.Workspace:FindFirstChild("Path")
+
+    if pathFolder then
+        local targetPart = pathFolder:FindFirstChild(tostring(getgenv().Path))
+        if targetPart and targetPart:IsA("Part") then
+            local targetCFrame = targetPart.CFrame
+            while true do
+                for key, value in pairs(unitData) do
+                    local unitName = getUnitName(value)
+                    local rawName = value
+                    local place = {
+                        [1] = unitName,
+                        [2] = targetCFrame,
+                        [3] = Vector3.new(0, 0, 0),
+                        [4] = rawName
+                    }
+                    game:GetService("ReplicatedStorage").Remotes.CreateUnits:FireServer(unpack(place))
+
+                    local success, err = pcall(function()
+                        local unit = workspace.Unit[playerName][unitName] 
+                        if unit then
+                            local args = {
+                                [1] = unit  
+                            }
+                            game:GetService("ReplicatedStorage").Remotes.Upgrades:FireServer(unpack(args))
+                        else
+                            error("Không tìm thấy unit: " .. unitName)
+                        end
+                    end)
+
+                    if not success then
+                        warn("Lỗi khi nâng cấp: " .. err)
+                    end
+                end
+                task.wait(getgenv().Place)
+            end
+        end
+    else
+        error("Không tìm thấy thư mục Path trong Workspace")
+    end
 end
 
-if game.PlaceId == 16347800591 then
-    wait(2)
-    
-    if getgenv().EventHlw.Join_Hlw then
-        local teleportPosition = CFrame.new(90.8879166, 290.062073, -122.492111, 0.972313702, 0, 0.233679399, 0, 1, 0, -0.233679399, 0, 0.972313702)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = teleportPosition
-
-        wait(1)
-
-        local playhlw = {
-            [1] = {
-                ["\8"] = {
-                    [1] = {
-                        [1] = "Haunted Circus",
-                        [2] = "Hard",
-                        [3] = getgenv().Setting.Allow_Friends,
-                        ["n"] = 3
-                    }
-                }
-            },
-            [2] = {}
-        }
-
-        game:GetService("ReplicatedStorage").ReliableRedEvent:FireServer(unpack(playhlw))
-        wait(1)
-        play()
+while true do
+    if gameStates[getgenv().Game] then
+        game:GetService("ReplicatedStorage").Remotes[gameStates[getgenv().Game]]:FireServer()
+    else
+        warn("Trạng thái game không hợp lệ!")
+        break
     end
-    
-    if getgenv().AutoAbility.Gojo then
-        spawn(function()
-            while getgenv().AutoAbility.Gojo do
-                local autoability = {
-                    [1] = "UseAbility",
-                    [2] = workspace.Units.GojoEvo
-                }
-
-                game:GetService("ReplicatedStorage").EventsAndFunctions.RemoteFunctions.InteractUnit:InvokeServer(unpack(autoability))
-
-                wait(3) 
-            end
-        end)
-    end
-
-    if getgenv().AutoAbility.Sukuna then
-        spawn(function()
-            while getgenv().AutoAbility.Sukuna do
-                local args = {
-                    [1] = "UseAbility",
-                    [2] = workspace.Units.SukunaEvo
-                }
-
-                game:GetService("ReplicatedStorage").EventsAndFunctions.RemoteFunctions.InteractUnit:InvokeServer(unpack(args))
-
-                wait(3) 
-            end
-        end)
-    end
-
-    if getgenv().JoinRaid.Green_Planet_Destroyed then
-        local args = {
-            [1] = {
-                ["\7"] = {
-                    [1] = {
-                        [1] = "Green Planet Destroyed",
-                        [2] = "Hard",
-                        [3] = getgenv().Setting.Allow_Friends,
-                        ["n"] = 3
-                    }
-                }
-            },
-            [2] = {}
-        }
-        game:GetService("ReplicatedStorage").ReliableRedEvent:FireServer(unpack(args))
-        wait(1)
-        play()
-    end
-
-    if getgenv().JoinRaid.Hollow_Desert then
-        local args = {
-            [1] = {
-                ["\7"] = {
-                    [1] = {
-                        [1] = "Hollow Desert",
-                        [2] = "Hard",
-                        [3] = getgenv().Setting.Allow_Friends,
-                        ["n"] = 3
-                    }
-                }
-            },
-            [2] = {}
-        }
-        game:GetService("ReplicatedStorage").ReliableRedEvent:FireServer(unpack(args))
-        wait(1)
-        play()
-    end
-
-    if getgenv().JoinRaid.Red_Palace then
-        local args = {
-            [1] = {
-                ["\7"] = {
-                    [1] = {
-                        [1] = "Red Palace",
-                        [2] = "Hard",
-                        [3] = getgenv().Setting.Allow_Friends,
-                        ["n"] = 3
-                    }
-                }
-            },
-            [2] = {}
-        }
-        game:GetService("ReplicatedStorage").ReliableRedEvent:FireServer(unpack(args))
-        wait(1)
-        play()
-    end
-
-    if getgenv().JoinRaid.Sorcery_Academy then
-        local args = {
-            [1] = {
-                ["\7"] = {
-                    [1] = {
-                        [1] = "Sorcery Academy",
-                        [2] = "Hard",
-                        [3] = getgenv().Setting.Allow_Friends,
-                        ["n"] = 3
-                    }
-                }
-            },
-            [2] = {}
-        }
-        game:GetService("ReplicatedStorage").ReliableRedEvent:FireServer(unpack(args))
-        wait(1)
-        play()
-    end
-
-else
-    for i = 1, getgenv().Setting.Speed do
-        game:GetService("ReplicatedStorage").EventsAndFunctions.RemoteFunctions.ChangeGameSpeed:InvokeServer()
-    end
+    task.wait(1)
 end
