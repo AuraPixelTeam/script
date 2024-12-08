@@ -222,7 +222,7 @@ if game.PlaceId == 12886143095 then
 
     local character = player.Character or player.CharacterAdded:Wait()
     local hrp = character:WaitForChild("HumanoidRootPart")
-    hrp.CFrame = CFrame.new(28.35157585144043, 3.89143967628479, -40.04119110107422)
+    hrp.CFrame = CFrame.new(717.270203, 291.576599, 461.668304)
 
     while true do
         local playinfcastle = {
